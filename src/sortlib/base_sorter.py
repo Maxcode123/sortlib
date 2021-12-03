@@ -4,10 +4,7 @@ from sortlib.common.comparable import ComparableType
 
 
 class BaseSorter:
-    """
-    Base sorter class, all other sorters inherit from this class.
-    Implements the methods less, exchange, show and is_sorted.
-    """
+    
 
     @staticmethod
     def less(v: ComparableType, w: ComparableType) -> bool:
@@ -36,3 +33,25 @@ class BaseSorter:
             if self.less(array[index], array[index-1]):
                 return False
             return True
+
+    def merge(self, array: MutableSequence[ComparableType], lo: int, mid: int, hi: int) -> None:
+        'Merges array[lo:mid] with array[mid+1:hi]'
+        i = lo
+        j = mid + 1
+        aux = [0] * len(array)
+        for k in range(lo, hi+1):
+            aux[k] = array[k]
+        for k in range(lo, hi+1):
+            if (i > mid):
+                array[k] = aux[j]
+                j += 1
+            elif (j > hi):
+                array[k] = aux[i]
+                i += 1
+            elif (self.less(aux[j], aux[i])):
+                array[k] = aux[j]
+                j += 1
+            else:
+                array[k] = aux[i]
+                i += 1
+        return None
